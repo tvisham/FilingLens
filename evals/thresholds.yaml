@@ -1,0 +1,26 @@
+# Eval gate. A metric fails the suite when its value is outside these bounds.
+# Metrics with nothing to measure (e.g. no human labels yet) are reported as skipped.
+# Starting values: tune them once there is a baseline from real runs.
+
+# -- deterministic (smoke + full) -------------------------------------------------------
+financial_xbrl_match: {min: 1.0}      # every reported/derived quarter re-found in raw XBRL
+financial_golden_match: {min: 1.0}    # vs values a person verified against the filing
+cadence_golden_match: {min: 1.0}      # vs counts a person verified
+extraction_confidence: {min: 0.9}     # share of latest 10-Ks extracted at confidence >= 0.7
+adversarial_tools: {min: 1.0}         # tool guardrails (non-SEC company, injection-shaped args)
+guardrail_checks: {min: 1.0}          # output guardrails on crafted outputs (advice, numbers, delimiters)
+
+# Free local classifier vs your risk labels: report-only (no threshold) until there is a baseline.
+
+# -- LLM (full only) ----------------------------------------------------------------------
+risk_category_f1_micro: {min: 0.70}
+risk_category_kappa: {min: 0.60}      # primary category vs human labels
+faithfulness: {min: 0.90}             # summaries supported by their cited chunks
+agent_success_rate: {min: 0.90}
+coherence_mean: {min: 3.5}            # LLM judge, 1-5
+judge_human_spearman: {min: 0.50}     # is the coherence judge tracking human scores?
+latency_p50_ms: {max: 90000}
+latency_p95_ms: {max: 180000}
+tool_calls_per_run: {max: 15}
+cost_per_report_usd: {max: 1.00}
+adversarial_llm: {min: 1.0}           # injection, advice request, non-SEC company, prompt extraction

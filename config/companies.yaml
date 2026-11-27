@@ -1,0 +1,18 @@
+# Starting universe: 25 companies, 5 sectors.
+# CIKs are resolved at runtime from SEC's company_tickers.json; do not hand-type them
+# (the one exception is `predecessors` below).
+# SEC uses "-" for share classes in some tickers (e.g. BRK-B); use SEC's spelling.
+sectors:
+  technology: [AAPL, MSFT, NVDA, GOOGL, ORCL]
+  financials: [JPM, BAC, WFC, GS, V]
+  healthcare: [UNH, JNJ, PFE, CVS, ABBV]
+  energy: [XOM, CVX, COP, PSX, MPC]
+  consumer: [WMT, AMZN, COST, HD, PG]
+
+# Earlier registrants whose filings still count toward a ticker's cadence. Needed after a
+# holding-company reorganization: the ticker file then maps only the new CIK, and the
+# filing history stays under the old one. Verify each entry on EDGAR before adding it.
+predecessors:
+  # ExxonMobil Holdings Corp (0002115436) became the registrant via 8-K12B on 2026-07-01;
+  # 10-K history up to FY2025 is under Exxon Mobil Corp.
+  XOM: ["0000034088"]

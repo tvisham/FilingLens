@@ -1,0 +1,50 @@
+name: nightly-eval
+
+# The full suite calls Claude (classification, judge, agent runs) and costs money, so it
+# only runs when started by hand (Actions tab -> full-eval -> Run workflow). To make it
+# nightly, add:  schedule: [{cron: "0 7 * * *"}]
+# It ingests only the companies the agent plan needs, into a throwaway database.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: filinglens
+          POSTGRES_PASSWORD: filinglens
+          POSTGRES_DB: filinglens
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U filinglens" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DATABASE_URL: postgresql+psycopg://filinglens:filinglens@localhost:5432/filinglens
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked --extra embeddings
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .cache/sec
+            ~/.cache/huggingface
+          key: nightly-cache-${{ github.run_id }}
+          restore-keys: nightly-cache-
+      - run: uv run alembic upgrade head
+      - run: uv run filinglens risk ingest AAPL JPM XOM CVX COP PSX MPC --classify
+      - run: uv run filinglens eval run --suite full --yes
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-eval-report
+          path: evals/reports/

@@ -1,0 +1,82 @@
+[project]
+name = "filinglens"
+version = "0.1.0"
+description = "Agentic analysis of SEC filings: cadence, financials, and cited risk factors with evals and guardrails."
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+authors = [{ name = "Tvisha Mishra" }]
+dependencies = [
+    "httpx>=0.27",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "sqlalchemy>=2.0.30",
+    "alembic>=1.13",
+    "psycopg[binary]>=3.2",
+    "pyyaml>=6.0",
+    "click>=8.1",
+    # MCP Python SDK 2.x implements spec 2026-07-28 (stateless); locked to 2.3.0 in uv.lock.
+    "mcp>=2.3,<3",
+    # Claude Agent SDK is pre-1.0: minor versions may break, so stay on 0.2.x.
+    "claude-agent-sdk>=0.2.189,<0.3",
+    "anyio>=4.4",
+    "lxml>=6.1.3",
+    "anthropic>=2.14.0",
+    "pgvector>=0.3",
+    "fastapi>=0.115",
+]
+
+[project.scripts]
+filinglens = "filinglens.cli:main"
+filinglens-mcp = "filinglens.mcp_server.server:main"
+
+[project.optional-dependencies]
+embeddings = [
+    "sentence-transformers>=3",
+]
+localdb = [
+    "pgserver>=0.1.4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.2",
+    "mypy>=1.10",
+    "ruff>=0.5",
+    "types-PyYAML>=6.0",
+    "types-lxml>=2026.2.16",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/filinglens"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tests"]
+markers = [
+    "live: hits the real SEC EDGAR API (set RUN_LIVE=1 to run)",
+    "db: needs a Postgres database (set TEST_DATABASE_URL to run)",
+]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+mypy_path = "src"
+packages = ["filinglens"]
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["filinglens.db.migrations.*"]
+ignore_errors = true

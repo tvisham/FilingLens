@@ -1,0 +1,9 @@
+.venv/
+.cache/
+data/
+evals/reports/
+web/node_modules/
+web/.next/
+.env
+.git/
+**/__pycache__/

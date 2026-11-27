@@ -1,0 +1,20 @@
+{"case_id":"AAPL-10-K-2026-11-26","ticker":"AAPL","as_of":"2026-11-26","form":"10-K","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"AAPL-10-Q-2026-11-26","ticker":"AAPL","as_of":"2026-11-26","form":"10-Q","count":9,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"AAPL-8-K-2026-11-26","ticker":"AAPL","as_of":"2026-11-26","form":"8-K","count":27,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"AAPL-DEF 14A-2026-11-26","ticker":"AAPL","as_of":"2026-11-26","form":"DEF 14A","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"COST-10-K-2026-11-26","ticker":"COST","as_of":"2026-11-26","form":"10-K","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"COST-10-Q-2026-11-26","ticker":"COST","as_of":"2026-11-26","form":"10-Q","count":9,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"COST-8-K-2026-11-26","ticker":"COST","as_of":"2026-11-26","form":"8-K","count":33,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"COST-DEF 14A-2026-11-26","ticker":"COST","as_of":"2026-11-26","form":"DEF 14A","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"JPM-10-K-2026-11-26","ticker":"JPM","as_of":"2026-11-26","form":"10-K","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"JPM-10-Q-2026-11-26","ticker":"JPM","as_of":"2026-11-26","form":"10-Q","count":9,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"JPM-8-K-2026-11-26","ticker":"JPM","as_of":"2026-11-26","form":"8-K","count":79,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"JPM-DEF 14A-2026-11-26","ticker":"JPM","as_of":"2026-11-26","form":"DEF 14A","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"WMT-10-K-2026-11-26","ticker":"WMT","as_of":"2026-11-26","form":"10-K","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"WMT-10-Q-2026-11-26","ticker":"WMT","as_of":"2026-11-26","form":"10-Q","count":9,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"WMT-8-K-2026-11-26","ticker":"WMT","as_of":"2026-11-26","form":"8-K","count":40,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"WMT-DEF 14A-2026-11-26","ticker":"WMT","as_of":"2026-11-26","form":"DEF 14A","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"XOM-10-K-2026-11-26","ticker":"XOM","as_of":"2026-11-26","form":"10-K","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"XOM-10-Q-2026-11-26","ticker":"XOM","as_of":"2026-11-26","form":"10-Q","count":9,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"XOM-8-K-2026-11-26","ticker":"XOM","as_of":"2026-11-26","form":"8-K","count":46,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}
+{"case_id":"XOM-DEF 14A-2026-11-26","ticker":"XOM","as_of":"2026-11-26","form":"DEF 14A","count":3,"verified_by":"Tvisha","verified_at":"2026-11-27","note":null}

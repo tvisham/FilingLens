@@ -1,0 +1,79 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: filinglens
+          POSTGRES_PASSWORD: filinglens
+          POSTGRES_DB: filinglens_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U filinglens" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      # Throwaway service-container DB: the DB tests reset it. Never point this at Neon.
+      TEST_DATABASE_URL: postgresql+psycopg://filinglens:filinglens@localhost:5432/filinglens_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked
+      - run: uv run ruff format --check .
+      - run: uv run ruff check .
+      - run: uv run mypy
+      - run: uv run pytest  # unit + DB (migrations 0001-0004 against pgvector); live tests skipped
+
+  smoke-eval:
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}  # "FilingLens <name> <email>", required by SEC
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked
+      - uses: actions/cache@v4
+        with:
+          path: .cache/sec
+          key: sec-cache-${{ github.run_id }}
+          restore-keys: sec-cache-
+      # No LLM, no database: XBRL exact match, extraction confidence, tool guardrails, golden values.
+      - run: uv run filinglens eval run --suite smoke --no-db
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-eval-report
+          path: evals/reports/
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run gen:api && git diff --exit-code lib/api-types.ts  # client matches web/openapi.json
+      - run: npm run typecheck
+      - run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
